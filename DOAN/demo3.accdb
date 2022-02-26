@@ -1,0 +1,41 @@
+/*==============================================================*/
+/* DBMS name:      Microsoft Access 2000                        */
+/* Created on:     12/12/2021 19:34:12                          */
+/*==============================================================*/
+
+
+alter table SINHVIEN
+   drop constraint FK_SINHVIEN_ASSOCIATI_LOP;
+
+drop table LOP;
+
+drop table SINHVIEN;
+
+/*==============================================================*/
+/* Table: LOP                                                   */
+/*==============================================================*/
+create table LOP
+(
+    MALOP                CHAR(10)        not null,
+    TENLOP               CHAR(30),
+    SISO                 INTEGER,
+constraint PK_LOP primary key (MALOP)
+);
+
+/*==============================================================*/
+/* Table: SINHVIEN                                              */
+/*==============================================================*/
+create table SINHVIEN
+(
+    MASV                 CHAR(10)        not null,
+    MALOP                CHAR(10)        not null,
+    TENSV                CHAR(30),
+    NGAYSINH             DATE,
+    ATTRIBUTE_4          CHAR(30),
+constraint PK_SINHVIEN primary key (MASV)
+);
+
+alter table SINHVIEN
+   add constraint FK_SINHVIEN_ASSOCIATI_LOP foreign key (MALOP)
+      references LOP (MALOP);
+

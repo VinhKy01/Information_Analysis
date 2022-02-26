@@ -1,0 +1,623 @@
+/*==============================================================*/
+/* DBMS name:      Microsoft Access 2000                        */
+/* Created on:     12/12/2021 19:38:08                          */
+/*==============================================================*/
+
+
+alter table BOOK
+   drop constraint FK_BOOK_INVOICES__INVOICES;
+
+alter table BOOK_SUPPLY
+   drop constraint FK_BOOK_SUP_BOOK_SUPP_BOOK;
+
+alter table BOOK_SUPPLY
+   drop constraint FK_BOOK_SUP_BOOK_SUPP_PUBLISHE;
+
+alter table CHECK_IN
+   drop constraint FK_CHECK_IN_CHECK_IN_EMPLOYEE;
+
+alter table CHECK_IN
+   drop constraint FK_CHECK_IN_CHECK_IN2_INVOICES;
+
+alter table CHECK_OUT
+   drop constraint FK_CHECK_OU_CHECK_OUT_EMPLOYEE;
+
+alter table CHECK_OUT
+   drop constraint FK_CHECK_OU_CHECK_OUT_INVOICES;
+
+alter table CONTAINED
+   drop constraint FK_CONTAINE_CONTAINED_BOOKSHEL;
+
+alter table CONTAINED
+   drop constraint FK_CONTAINE_CONTAINED_KIND_OF_;
+
+alter table INCLUDE
+   drop constraint FK_INCLUDE_INCLUDE_BOOK;
+
+alter table INCLUDE
+   drop constraint FK_INCLUDE_INCLUDE2_KIND_OF_;
+
+alter table INVOICES_IN_INCLUDE
+   drop constraint FK_INVOICES_INVOICES__INVOICES;
+
+alter table INVOICES_IN_INCLUDE
+   drop constraint FK_INVOICES_INVOICES__BOOK;
+
+alter table INVOICES_OUT
+   drop constraint FK_INVOICES_CUS_HAVE_CUSTOMER;
+
+alter table MAN_BS
+   drop constraint FK_MAN_BS_MAN_BS_MANAGER;
+
+alter table MAN_BS
+   drop constraint FK_MAN_BS_MAN_BS2_BOOKSHEL;
+
+alter table MAN_EMP
+   drop constraint FK_MAN_EMP_MAN_EMP_EMPLOYEE;
+
+alter table MAN_EMP
+   drop constraint FK_MAN_EMP_MAN_EMP2_MANAGER;
+
+alter table PUB_HAVE
+   drop constraint FK_PUB_HAVE_PUB_HAVE_INVOICES;
+
+alter table PUB_HAVE
+   drop constraint FK_PUB_HAVE_PUB_HAVE2_PUBLISHE;
+
+alter table WORK_AT
+   drop constraint FK_WORK_AT_WORK_AT_EMPLOYEE;
+
+alter table WORK_AT
+   drop constraint FK_WORK_AT_WORK_AT2_BOOKSHEL;
+
+drop index INVOICES_OUT_INCLUDE_FK on BOOK;
+
+drop table BOOK;
+
+drop table BOOKSHELF;
+
+drop index BOOK_SUPPLY2_FK on BOOK_SUPPLY;
+
+drop index BOOK_SUPPLY_FK on BOOK_SUPPLY;
+
+drop table BOOK_SUPPLY;
+
+drop index CHECK_IN2_FK on CHECK_IN;
+
+drop index CHECK_IN_FK on CHECK_IN;
+
+drop table CHECK_IN;
+
+drop index CHECK_OUT2_FK on CHECK_OUT;
+
+drop index CHECK_OUT_FK on CHECK_OUT;
+
+drop table CHECK_OUT;
+
+drop index CONTAINED2_FK on CONTAINED;
+
+drop index CONTAINED_FK on CONTAINED;
+
+drop table CONTAINED;
+
+drop table CUSTOMER;
+
+drop table EMPLOYEE;
+
+drop index INCLUDE2_FK on INCLUDE;
+
+drop index INCLUDE_FK on INCLUDE;
+
+drop table INCLUDE;
+
+drop table INVOICES_IN;
+
+drop index INVOICES_IN_INCLUDE2_FK on INVOICES_IN_INCLUDE;
+
+drop index INVOICES_IN_INCLUDE_FK on INVOICES_IN_INCLUDE;
+
+drop table INVOICES_IN_INCLUDE;
+
+drop index CUS_HAVE_FK on INVOICES_OUT;
+
+drop table INVOICES_OUT;
+
+drop table KIND_OF_BOOK;
+
+drop table MANAGER;
+
+drop index MAN_BS2_FK on MAN_BS;
+
+drop index MAN_BS_FK on MAN_BS;
+
+drop table MAN_BS;
+
+drop index MAN_EMP2_FK on MAN_EMP;
+
+drop index MAN_EMP_FK on MAN_EMP;
+
+drop table MAN_EMP;
+
+drop table PUBLISHER;
+
+drop index PUB_HAVE2_FK on PUB_HAVE;
+
+drop index PUB_HAVE_FK on PUB_HAVE;
+
+drop table PUB_HAVE;
+
+drop index WORK_AT2_FK on WORK_AT;
+
+drop index WORK_AT_FK on WORK_AT;
+
+drop table WORK_AT;
+
+/*==============================================================*/
+/* Table: BOOK                                                  */
+/*==============================================================*/
+create table BOOK
+(
+    B_ITEM               INTEGER         not null,
+    OUT_ITEM             INTEGER,
+    B_NAME               CHAR(30),
+    B_AUTHORS            CHAR(30),
+    B_COST               INTEGER,
+    B_DATE               DATETIME,
+    B_NUMBER             INTEGER,
+    OUT_NUMBER           INTEGER,
+constraint PK_BOOK primary key (B_ITEM)
+);
+
+/*==============================================================*/
+/* Index: INVOICES_OUT_INCLUDE_FK                               */
+/*==============================================================*/
+create  index INVOICES_OUT_INCLUDE_FK on BOOK
+(
+   OUT_ITEM             ASC
+);
+
+/*==============================================================*/
+/* Table: BOOKSHELF                                             */
+/*==============================================================*/
+create table BOOKSHELF
+(
+    BS_ITEM              INTEGER         not null,
+    BS_NAME              CHAR(30),
+    BS_ADRESS            CHAR(30),
+constraint PK_BOOKSHELF primary key (BS_ITEM)
+);
+
+/*==============================================================*/
+/* Table: BOOK_SUPPLY                                           */
+/*==============================================================*/
+create table BOOK_SUPPLY
+(
+    B_ITEM               INTEGER         not null,
+    PUB_ITEM             INTEGER         not null,
+constraint PK_BOOK_SUPPLY primary key (B_ITEM, PUB_ITEM)
+);
+
+/*==============================================================*/
+/* Index: BOOK_SUPPLY_FK                                        */
+/*==============================================================*/
+create  index BOOK_SUPPLY_FK on BOOK_SUPPLY
+(
+   B_ITEM               ASC
+);
+
+/*==============================================================*/
+/* Index: BOOK_SUPPLY2_FK                                       */
+/*==============================================================*/
+create  index BOOK_SUPPLY2_FK on BOOK_SUPPLY
+(
+   PUB_ITEM             ASC
+);
+
+/*==============================================================*/
+/* Table: CHECK_IN                                              */
+/*==============================================================*/
+create table CHECK_IN
+(
+    EMP_ITEM             INTEGER         not null,
+    IN_ITEM              INTEGER         not null,
+constraint PK_CHECK_IN primary key (EMP_ITEM, IN_ITEM)
+);
+
+/*==============================================================*/
+/* Index: CHECK_IN_FK                                           */
+/*==============================================================*/
+create  index CHECK_IN_FK on CHECK_IN
+(
+   EMP_ITEM             ASC
+);
+
+/*==============================================================*/
+/* Index: CHECK_IN2_FK                                          */
+/*==============================================================*/
+create  index CHECK_IN2_FK on CHECK_IN
+(
+   IN_ITEM              ASC
+);
+
+/*==============================================================*/
+/* Table: CHECK_OUT                                             */
+/*==============================================================*/
+create table CHECK_OUT
+(
+    EMP_ITEM             INTEGER         not null,
+    OUT_ITEM             INTEGER         not null,
+constraint PK_CHECK_OUT primary key (EMP_ITEM, OUT_ITEM)
+);
+
+/*==============================================================*/
+/* Index: CHECK_OUT_FK                                          */
+/*==============================================================*/
+create  index CHECK_OUT_FK on CHECK_OUT
+(
+   EMP_ITEM             ASC
+);
+
+/*==============================================================*/
+/* Index: CHECK_OUT2_FK                                         */
+/*==============================================================*/
+create  index CHECK_OUT2_FK on CHECK_OUT
+(
+   OUT_ITEM             ASC
+);
+
+/*==============================================================*/
+/* Table: CONTAINED                                             */
+/*==============================================================*/
+create table CONTAINED
+(
+    BS_ITEM              INTEGER         not null,
+    KB_ITEM              INTEGER         not null,
+constraint PK_CONTAINED primary key (BS_ITEM, KB_ITEM)
+);
+
+/*==============================================================*/
+/* Index: CONTAINED_FK                                          */
+/*==============================================================*/
+create  index CONTAINED_FK on CONTAINED
+(
+   BS_ITEM              ASC
+);
+
+/*==============================================================*/
+/* Index: CONTAINED2_FK                                         */
+/*==============================================================*/
+create  index CONTAINED2_FK on CONTAINED
+(
+   KB_ITEM              ASC
+);
+
+/*==============================================================*/
+/* Table: CUSTOMER                                              */
+/*==============================================================*/
+create table CUSTOMER
+(
+    C_ITEM               INTEGER         not null,
+    C_NAME               CHAR(30),
+    C_ADRESS             CHAR(30),
+constraint PK_CUSTOMER primary key (C_ITEM)
+);
+
+/*==============================================================*/
+/* Table: EMPLOYEE                                              */
+/*==============================================================*/
+create table EMPLOYEE
+(
+    EMP_ITEM             INTEGER         not null,
+    EMP_NAME             CHAR(30),
+    EMP_SALARY           INTEGER,
+    EMP_ADRESS           CHAR(30),
+constraint PK_EMPLOYEE primary key (EMP_ITEM)
+);
+
+/*==============================================================*/
+/* Table: INCLUDE                                               */
+/*==============================================================*/
+create table INCLUDE
+(
+    B_ITEM               INTEGER         not null,
+    KB_ITEM              INTEGER         not null,
+constraint PK_INCLUDE primary key (B_ITEM, KB_ITEM)
+);
+
+/*==============================================================*/
+/* Index: INCLUDE_FK                                            */
+/*==============================================================*/
+create  index INCLUDE_FK on INCLUDE
+(
+   B_ITEM               ASC
+);
+
+/*==============================================================*/
+/* Index: INCLUDE2_FK                                           */
+/*==============================================================*/
+create  index INCLUDE2_FK on INCLUDE
+(
+   KB_ITEM              ASC
+);
+
+/*==============================================================*/
+/* Table: INVOICES_IN                                           */
+/*==============================================================*/
+create table INVOICES_IN
+(
+    IN_ITEM              INTEGER         not null,
+    IN_DATE              DATETIME,
+constraint PK_INVOICES_IN primary key (IN_ITEM)
+);
+
+/*==============================================================*/
+/* Table: INVOICES_IN_INCLUDE                                   */
+/*==============================================================*/
+create table INVOICES_IN_INCLUDE
+(
+    IN_ITEM              INTEGER         not null,
+    B_ITEM               INTEGER         not null,
+    IN_NUMBER            INTEGER,
+constraint PK_INVOICES_IN_INCLUDE primary key (IN_ITEM, B_ITEM)
+);
+
+/*==============================================================*/
+/* Index: INVOICES_IN_INCLUDE_FK                                */
+/*==============================================================*/
+create  index INVOICES_IN_INCLUDE_FK on INVOICES_IN_INCLUDE
+(
+   IN_ITEM              ASC
+);
+
+/*==============================================================*/
+/* Index: INVOICES_IN_INCLUDE2_FK                               */
+/*==============================================================*/
+create  index INVOICES_IN_INCLUDE2_FK on INVOICES_IN_INCLUDE
+(
+   B_ITEM               ASC
+);
+
+/*==============================================================*/
+/* Table: INVOICES_OUT                                          */
+/*==============================================================*/
+create table INVOICES_OUT
+(
+    OUT_ITEM             INTEGER         not null,
+    C_ITEM               INTEGER         not null,
+    OUT_DATE             DATETIME,
+constraint PK_INVOICES_OUT primary key (OUT_ITEM)
+);
+
+/*==============================================================*/
+/* Index: CUS_HAVE_FK                                           */
+/*==============================================================*/
+create  index CUS_HAVE_FK on INVOICES_OUT
+(
+   C_ITEM               ASC
+);
+
+/*==============================================================*/
+/* Table: KIND_OF_BOOK                                          */
+/*==============================================================*/
+create table KIND_OF_BOOK
+(
+    KB_ITEM              INTEGER         not null,
+    KB_NAME              CHAR(30),
+constraint PK_KIND_OF_BOOK primary key (KB_ITEM)
+);
+
+/*==============================================================*/
+/* Table: MANAGER                                               */
+/*==============================================================*/
+create table MANAGER
+(
+    MA_ITEM              INTEGER         not null,
+    MA_NAME              CHAR(30),
+    MA_SALARY            INTEGER,
+    MA_ADRESS            CHAR(30),
+constraint PK_MANAGER primary key (MA_ITEM)
+);
+
+/*==============================================================*/
+/* Table: MAN_BS                                                */
+/*==============================================================*/
+create table MAN_BS
+(
+    MA_ITEM              INTEGER         not null,
+    BS_ITEM              INTEGER         not null,
+constraint PK_MAN_BS primary key (MA_ITEM, BS_ITEM)
+);
+
+/*==============================================================*/
+/* Index: MAN_BS_FK                                             */
+/*==============================================================*/
+create  index MAN_BS_FK on MAN_BS
+(
+   MA_ITEM              ASC
+);
+
+/*==============================================================*/
+/* Index: MAN_BS2_FK                                            */
+/*==============================================================*/
+create  index MAN_BS2_FK on MAN_BS
+(
+   BS_ITEM              ASC
+);
+
+/*==============================================================*/
+/* Table: MAN_EMP                                               */
+/*==============================================================*/
+create table MAN_EMP
+(
+    EMP_ITEM             INTEGER         not null,
+    MA_ITEM              INTEGER         not null,
+constraint PK_MAN_EMP primary key (EMP_ITEM, MA_ITEM)
+);
+
+/*==============================================================*/
+/* Index: MAN_EMP_FK                                            */
+/*==============================================================*/
+create  index MAN_EMP_FK on MAN_EMP
+(
+   EMP_ITEM             ASC
+);
+
+/*==============================================================*/
+/* Index: MAN_EMP2_FK                                           */
+/*==============================================================*/
+create  index MAN_EMP2_FK on MAN_EMP
+(
+   MA_ITEM              ASC
+);
+
+/*==============================================================*/
+/* Table: PUBLISHER                                             */
+/*==============================================================*/
+create table PUBLISHER
+(
+    PUB_ITEM             INTEGER         not null,
+    PUB_NAME             CHAR(30),
+    PUB_ADRESS           CHAR(30),
+constraint PK_PUBLISHER primary key (PUB_ITEM)
+);
+
+/*==============================================================*/
+/* Table: PUB_HAVE                                              */
+/*==============================================================*/
+create table PUB_HAVE
+(
+    IN_ITEM              INTEGER         not null,
+    PUB_ITEM             INTEGER         not null,
+constraint PK_PUB_HAVE primary key (IN_ITEM, PUB_ITEM)
+);
+
+/*==============================================================*/
+/* Index: PUB_HAVE_FK                                           */
+/*==============================================================*/
+create  index PUB_HAVE_FK on PUB_HAVE
+(
+   IN_ITEM              ASC
+);
+
+/*==============================================================*/
+/* Index: PUB_HAVE2_FK                                          */
+/*==============================================================*/
+create  index PUB_HAVE2_FK on PUB_HAVE
+(
+   PUB_ITEM             ASC
+);
+
+/*==============================================================*/
+/* Table: WORK_AT                                               */
+/*==============================================================*/
+create table WORK_AT
+(
+    EMP_ITEM             INTEGER         not null,
+    BS_ITEM              INTEGER         not null,
+constraint PK_WORK_AT primary key (EMP_ITEM, BS_ITEM)
+);
+
+/*==============================================================*/
+/* Index: WORK_AT_FK                                            */
+/*==============================================================*/
+create  index WORK_AT_FK on WORK_AT
+(
+   EMP_ITEM             ASC
+);
+
+/*==============================================================*/
+/* Index: WORK_AT2_FK                                           */
+/*==============================================================*/
+create  index WORK_AT2_FK on WORK_AT
+(
+   BS_ITEM              ASC
+);
+
+alter table BOOK
+   add constraint FK_BOOK_INVOICES__INVOICES foreign key (OUT_ITEM)
+      references INVOICES_OUT (OUT_ITEM);
+
+alter table BOOK_SUPPLY
+   add constraint FK_BOOK_SUP_BOOK_SUPP_BOOK foreign key (B_ITEM)
+      references BOOK (B_ITEM);
+
+alter table BOOK_SUPPLY
+   add constraint FK_BOOK_SUP_BOOK_SUPP_PUBLISHE foreign key (PUB_ITEM)
+      references PUBLISHER (PUB_ITEM);
+
+alter table CHECK_IN
+   add constraint FK_CHECK_IN_CHECK_IN_EMPLOYEE foreign key (EMP_ITEM)
+      references EMPLOYEE (EMP_ITEM);
+
+alter table CHECK_IN
+   add constraint FK_CHECK_IN_CHECK_IN2_INVOICES foreign key (IN_ITEM)
+      references INVOICES_IN (IN_ITEM);
+
+alter table CHECK_OUT
+   add constraint FK_CHECK_OU_CHECK_OUT_EMPLOYEE foreign key (EMP_ITEM)
+      references EMPLOYEE (EMP_ITEM);
+
+alter table CHECK_OUT
+   add constraint FK_CHECK_OU_CHECK_OUT_INVOICES foreign key (OUT_ITEM)
+      references INVOICES_OUT (OUT_ITEM);
+
+alter table CONTAINED
+   add constraint FK_CONTAINE_CONTAINED_BOOKSHEL foreign key (BS_ITEM)
+      references BOOKSHELF (BS_ITEM);
+
+alter table CONTAINED
+   add constraint FK_CONTAINE_CONTAINED_KIND_OF_ foreign key (KB_ITEM)
+      references KIND_OF_BOOK (KB_ITEM);
+
+alter table INCLUDE
+   add constraint FK_INCLUDE_INCLUDE_BOOK foreign key (B_ITEM)
+      references BOOK (B_ITEM);
+
+alter table INCLUDE
+   add constraint FK_INCLUDE_INCLUDE2_KIND_OF_ foreign key (KB_ITEM)
+      references KIND_OF_BOOK (KB_ITEM);
+
+alter table INVOICES_IN_INCLUDE
+   add constraint FK_INVOICES_INVOICES__INVOICES foreign key (IN_ITEM)
+      references INVOICES_IN (IN_ITEM);
+
+alter table INVOICES_IN_INCLUDE
+   add constraint FK_INVOICES_INVOICES__BOOK foreign key (B_ITEM)
+      references BOOK (B_ITEM);
+
+alter table INVOICES_OUT
+   add constraint FK_INVOICES_CUS_HAVE_CUSTOMER foreign key (C_ITEM)
+      references CUSTOMER (C_ITEM);
+
+alter table MAN_BS
+   add constraint FK_MAN_BS_MAN_BS_MANAGER foreign key (MA_ITEM)
+      references MANAGER (MA_ITEM);
+
+alter table MAN_BS
+   add constraint FK_MAN_BS_MAN_BS2_BOOKSHEL foreign key (BS_ITEM)
+      references BOOKSHELF (BS_ITEM);
+
+alter table MAN_EMP
+   add constraint FK_MAN_EMP_MAN_EMP_EMPLOYEE foreign key (EMP_ITEM)
+      references EMPLOYEE (EMP_ITEM);
+
+alter table MAN_EMP
+   add constraint FK_MAN_EMP_MAN_EMP2_MANAGER foreign key (MA_ITEM)
+      references MANAGER (MA_ITEM);
+
+alter table PUB_HAVE
+   add constraint FK_PUB_HAVE_PUB_HAVE_INVOICES foreign key (IN_ITEM)
+      references INVOICES_IN (IN_ITEM);
+
+alter table PUB_HAVE
+   add constraint FK_PUB_HAVE_PUB_HAVE2_PUBLISHE foreign key (PUB_ITEM)
+      references PUBLISHER (PUB_ITEM);
+
+alter table WORK_AT
+   add constraint FK_WORK_AT_WORK_AT_EMPLOYEE foreign key (EMP_ITEM)
+      references EMPLOYEE (EMP_ITEM);
+
+alter table WORK_AT
+   add constraint FK_WORK_AT_WORK_AT2_BOOKSHEL foreign key (BS_ITEM)
+      references BOOKSHELF (BS_ITEM);
+
